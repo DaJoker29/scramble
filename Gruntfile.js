@@ -6,12 +6,12 @@ module.exports = function(grunt) {
                 tasks: ['sass:dev']
             },
             js: {
-                files: ['src/js/**/*.js'],
-                tasks: ['jshint', 'uglify:dev']
+                files: ['src/js/**/*.js', 'src/js/**/*.json'],
+                tasks: ['jshint', 'uglify:dev', 'copy:json']
             },
             php: {
                 files: ['src/php/**/*.php'],
-                tasks: ['copy']
+                tasks: ['copy:php']
             },
             livereload: {
                 options: { livereload: true },
@@ -93,6 +93,12 @@ module.exports = function(grunt) {
             php: {
                 cwd: 'src/php',
                 src: ['**/*.php', '!**/_*.php'],
+                dest: 'public',
+                expand: true
+            },
+            json: {
+                cwd: 'src/js',
+                src: ['**/*.json'],
                 dest: 'public',
                 expand: true
             }
