@@ -1,6 +1,5 @@
 var scramble = (function(){
     var game = {};
-    var score = document.querySelector('#score');
     var input = document.querySelector('#answer');
     var word = '';
 
@@ -39,24 +38,6 @@ var scramble = (function(){
         });
     };
 
-
-    var redrawScore = function() {
-        score.textContent = score.dataset.score;
-    };
-
-    var saveScore = function() {
-        localStorage.setItem('score', score.dataset.score);
-        redrawScore();
-    };
-
-    var getScore = function() {
-        score.dataset.score = localStorage.score || 0;
-    };
-
-    var addScore = function ( points ) {
-        score.dataset.score =  parseInt(score.dataset.score) + points;
-    };
-
     var drawWord = function() {
         var element;
         var scrambled = word.shuffle();
@@ -75,6 +56,22 @@ var scramble = (function(){
         }
     };
 
+    game.redrawScore = function() {
+        if (!localStorage.score) {
+            localStorage.score = 0;
+        }
+        score.textContent = localStorage.score;
+    };
+
+    game.clearScore = function() {
+        localStorage.score = 0;
+        game.redrawScore();
+    };
+
+    game.addScore = function ( pts ) {
+        localStorage.score = parseInt(localStorage.score) + pts;
+    };
+
     game.destroy = function() {
         window.scramble = null;
         window.scramble = game;
@@ -82,14 +79,12 @@ var scramble = (function(){
     };
 
     game.run = function() {
-        getScore();
-        redrawScore();
+        game.redrawScore();
         setWord();
         input.addEventListener( 'input', function(e) {
-            if(e.target.value === word) {
+            if(e.target.value.toLowerCase() === word.toLowerCase()) {
                 alert('You won!');
-                addScore(5);
-                saveScore();
+                game.addScore(5);
                 input.value = '';
                 game.destroy();
             }

@@ -14,9 +14,8 @@
         <div class="jumbotron">
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
-            <p>
-                Score <span id="score" class="badge"></span>
-            </p>
+            <span class="badge">Score: <span id="score"></span></span>
+            <a href="" onclick="scramble.clearScore();return false;">Clear</a>
         </div>
         <form class="well" action="javascript:void(0);">
             <div class="form-group">
