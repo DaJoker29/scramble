@@ -1,16 +1,19 @@
 var scramble = (function (game) {
-    var score = document.querySelector('#score');
+    
+    game.score = {};
 
-    game.redrawScore = function() {
-        score.textContent = localStorage.score = localStorage.score || 0;
+    var scoreEl = document.querySelector('#score');
+
+    game.score.update = function() {
+        scoreEl.textContent = localStorage.score = localStorage.score || 0;
     };
 
-    game.clearScore = function() {
+    game.score.clear = function() {
         localStorage.score = 0;
-        game.redrawScore();
+        game.score.update();
     };
 
-    game.addScore = function ( diff ) {
+    game.score.add = function ( diff ) {
         var pts;
         switch(diff) {
             case 'easy': 

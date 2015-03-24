@@ -1,6 +1,7 @@
 var scramble = (function ( game ) {
 
-    game.word = '';
+    game.word = {};
+    game.word.current = '';
 
     String.prototype.shuffle = function() {
         var a = this.split('');
@@ -27,31 +28,31 @@ var scramble = (function ( game ) {
         request.send();
     };
 
-    var drawWord = function() {
+    var draw = function() {
         var element;
-        var scrambled = game.word.shuffle();
-        console.log(game.word); // For cheating
+        game.word.scrambled = game.word.current.shuffle();
+        console.log(game.word.current); // For cheating
 
         if(document.querySelector('#scrambled')) {
             element = document.querySelector('#scrambled');
-            element.innerHTML = 'The word to unscramble is: <mark><strong>' + scrambled.toUpperCase() + '</strong></mark>';
+            element.innerHTML = 'The word to unscramble is: <mark><strong>' + game.word.scrambled.toUpperCase() + '</strong></mark>';
         } else {
             var page = document.querySelector('main');
             element = document.createElement('h3');
             element.id = 'scrambled';
             element.classList.add('well');
-            element.innerHTML = 'The word to unscramble is: <mark><strong>' + scrambled.toUpperCase() + '</strong></mark>';
+            element.innerHTML = 'The word to unscramble is: <mark><strong>' + game.word.scrambled.toUpperCase() + '</strong></mark>';
             page.appendChild(element);
         }
     };
 
-    game.setWord = function() {
+    game.word.set = function() {
         getJSON(function(response) {
             result = JSON.parse(response);
-            var index = Math.floor(Math.random() * (result[game.diff].length));
+            var index = Math.floor(Math.random() * (result[game.diff.current].length));
 
-            game.word = result[game.diff][index];
-            drawWord();
+            game.word.current = result[game.diff.current][index];
+            draw();
         });
     };
 

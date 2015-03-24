@@ -6,8 +6,8 @@ var scramble = (function( game ){
     var diffListener = function ( e ) {
          if (e.target !== e.currentTarget && e.target.type === 'radio') {
             if (['easy', 'medium', 'hard', 'stupid'].indexOf(e.target.name) > -1) {
-                game.diff = e.target.name;
-                game.saveDiff();
+                game.diff.current = e.target.name;
+                game.diff.saveDiff();
                 game.destroy();
             }
         }
@@ -16,7 +16,7 @@ var scramble = (function( game ){
     };
 
     var answerListener = function ( e ) {
-        if(e.target.value.toLowerCase() === game.word.toLowerCase()) {
+        if(e.target.value.toLowerCase() === game.word.current.toLowerCase()) {
             $('#success-modal').modal();
             setTimeout(function() {
                 $('#success-modal').modal('hide');
@@ -25,7 +25,7 @@ var scramble = (function( game ){
             $('#success-modal').on('hidden.bs.modal', function (e) {
                 input.focus();
             });
-            game.addScore(game.diff);
+            game.score.add(game.diff.current);
             input.value = '';
             game.destroy();
         }
@@ -41,16 +41,16 @@ var scramble = (function( game ){
 
     game.run = function( settings ) {
         if (localStorage.diff) {
-            game.diff = localStorage.diff;
-            game.updateDiff();
+            game.diff.current = localStorage.diff;
+            game.diff.updateDiff();
         } else {
-            game.diff = 'easy';
-            game.saveDiff();
-            game.updateDiff();
+            game.diff.current = 'easy';
+            game.diff.saveDiff();
+            game.diff.updateDiff();
         }
 
-        game.redrawScore();
-        game.setWord();
+        game.score.update();
+        game.word.set();
         input.addEventListener( 'input', answerListener);
         diffSelect.addEventListener( 'click', diffListener);
     };

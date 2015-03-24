@@ -53,7 +53,7 @@
             </div>
             </p>
             <span class="badge">Score: <span id="score"></span></span>
-            <a href="" onclick="scramble.clearScore();return false;">Clear</a>
+            <a href="" onclick="scramble.score.clear();return false;">Clear</a>
         </div>
         <form class="well" action="javascript:void(0);">
             <div class="form-group">
