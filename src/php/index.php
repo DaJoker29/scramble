@@ -7,6 +7,14 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script>
+    if (document.querySelector && window.addEventListener) {
+        document.documentElement.classList.add('js');
+    }
+</script>
+<style>
+    .js #warning { display: none; }
+</style>
 </head>
 <body>
     <main class="container">
@@ -55,11 +63,6 @@
     </main>
     <script src="script.js"></script>
     <script>
-        // Javascript Warning
-        if (document.querySelector && window.addEventListener) {
-            var warning = document.querySelector('#warning');
-            warning.style.display = 'none';
-        }
 
         console.log("Look here to cheat");
         // Load Game
