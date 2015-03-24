@@ -10,6 +10,20 @@
 </head>
 <body>
     <main class="container">
+        <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Success</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            That is correct
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="warning" class="alert alert-danger" role="alert">This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.</div>
         <div class="jumbotron">
             <h1>Scramble</h1>
@@ -35,7 +49,7 @@
         </div>
         <form class="well" action="javascript:void(0);">
             <div class="form-group">
-                <input id="answer" type="text" class="form-control" placeholder="Type your answer here">
+                <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
         </form>
     </main>
@@ -47,6 +61,7 @@
             warning.style.display = 'none';
         }
 
+        console.log("Look here to cheat");
         // Load Game
         scramble.run();
     </script>

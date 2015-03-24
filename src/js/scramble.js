@@ -2,6 +2,7 @@ var scramble = (function(){
     var game = {};
     var input = document.querySelector('#answer');
     var diffSelect = document.querySelector('#diffSelect');
+    var modal = document.querySelector('#success-modal');
     var word = '';
 
     String.prototype.shuffle = function() {
@@ -42,7 +43,7 @@ var scramble = (function(){
     var drawWord = function() {
         var element;
         var scrambled = word.shuffle();
-        // console.log(word);
+        console.log(word); // For cheating
 
         if(document.querySelector('#scrambled')) {
             element = document.querySelector('#scrambled');
@@ -66,11 +67,19 @@ var scramble = (function(){
             }
         }
         e.stopPropagation();
+        input.focus();
     };
 
     var answerListener = function ( e ) {
         if(e.target.value.toLowerCase() === word.toLowerCase()) {
-            alert('You won!');
+            $('#success-modal').modal();
+            setTimeout(function() {
+                $('#success-modal').modal('hide');
+            }, 900);
+
+            $('#success-modal').on('hidden.bs.modal', function (e) {
+                input.focus();
+            });
             game.addScore(game.diff);
             input.value = '';
             game.destroy();
