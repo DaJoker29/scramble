@@ -1,3 +1,6 @@
 {
-    "words":["dace","tyre","polo","army","daff","alee","mene","flor","sane","hear","talc","curl","freq","cllr","heli","thig","adjt","tiki","booz","pung","rank","cany","tees","pron","asur","kern","leet","maze","pres","lees","shmo","keno","jell","waif","bozo","byng","weak","maxi","pili","quad","dull","csch","bert","viki","nine","inby","fuel","snot","adit","stet","zeph","boss","slip","exam","moir","cusk","seta","mial","livy","wite","minn","frag","jhwh","piaf","whoa","coed","lise","prig","yalu","vite","holm","omak","obol","pill","spar","shiv","hurt","bulb","urge","grow","lead","glib","kans","wade","list","ajax","sion","bite","lynx","dmso","lobe","nike","bora","four","sugh","broo","bale","edna","laud","ymir"]
+    "easy": ["test", "ball"],
+    "medium": ["words", "stuff", "thing", "tower"],
+    "hard": ["hard"],
+    "stupid": ["hamburger", "cheeseburger", "milkshake"]
 }

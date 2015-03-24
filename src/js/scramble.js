@@ -1,6 +1,7 @@
 var scramble = (function(){
     var game = {};
     var input = document.querySelector('#answer');
+    var diffSelect = document.querySelector('#diffSelect');
     var word = '';
 
     String.prototype.shuffle = function() {
@@ -31,9 +32,9 @@ var scramble = (function(){
     var setWord = function() {
         getJSON(function(response) {
             result = JSON.parse(response);
-            var index = Math.floor(Math.random() * (result.words.length));
+            var index = Math.floor(Math.random() * (result[game.diff].length));
 
-            word = result.words[index];
+            word = result[game.diff][index];
             drawWord();
         });
     };
@@ -41,7 +42,7 @@ var scramble = (function(){
     var drawWord = function() {
         var element;
         var scrambled = word.shuffle();
-        console.log(word);
+        // console.log(word);
 
         if(document.querySelector('#scrambled')) {
             element = document.querySelector('#scrambled');
@@ -53,6 +54,26 @@ var scramble = (function(){
             element.classList.add('well');
             element.innerHTML = 'The word to unscramble is: <mark><strong>' + scrambled.toUpperCase() + '</strong></mark>';
             page.appendChild(element);
+        }
+    };
+
+    var diffListener = function ( e ) {
+         if (e.target !== e.currentTarget && e.target.type === 'radio') {
+            if (['easy', 'medium', 'hard', 'stupid'].indexOf(e.target.name) > -1) {
+                game.diff = e.target.name;
+                game.saveDiff();
+                game.destroy();
+            }
+        }
+        e.stopPropagation();
+    };
+
+    var answerListener = function ( e ) {
+        if(e.target.value.toLowerCase() === word.toLowerCase()) {
+            alert('You won!');
+            game.addScore(game.diff);
+            input.value = '';
+            game.destroy();
         }
     };
 
@@ -68,27 +89,65 @@ var scramble = (function(){
         game.redrawScore();
     };
 
-    game.addScore = function ( pts ) {
+    game.addScore = function ( diff ) {
+        var pts;
+        switch(diff) {
+            case 'easy': 
+                pts = 5;
+                break;
+            case 'medium':
+                pts = 10;
+                break;
+            case 'hard':
+                pts = 15;
+                break;
+            case 'stupid':
+                pts = 25;
+                break;
+            default: 
+                pts = 0;
+        }
+
         localStorage.score = parseInt(localStorage.score) + pts;
     };
 
     game.destroy = function() {
         window.scramble = null;
         window.scramble = game;
+        diffSelect.removeEventListener('click', diffListener);
         window.scramble.run();
     };
 
-    game.run = function() {
+    game.saveDiff = function() {
+        localStorage.diff = game.diff;
+    };
+
+    game.updateDiff = function() {
+        if(document.querySelector('.active')) {
+            var oldElement = document.querySelector('.active');
+            oldElement.classList.remove('active');            
+        }
+
+        var element = document.querySelector('input[name=' + game.diff);
+        element.checked = '';
+        element.parentNode.classList.add('active');
+    };
+
+    game.run = function( settings ) {
+        if (localStorage.diff) {
+            game.diff = localStorage.diff;
+            game.updateDiff();
+        } else {
+            game.diff = 'easy';
+            game.saveDiff();
+            game.updateDiff();
+        }
+
         game.redrawScore();
         setWord();
-        input.addEventListener( 'input', function(e) {
-            if(e.target.value.toLowerCase() === word.toLowerCase()) {
-                alert('You won!');
-                game.addScore(5);
-                input.value = '';
-                game.destroy();
-            }
-        });
+        input.addEventListener( 'input', answerListener);
+
+        diffSelect.addEventListener( 'click', diffListener);
     };
 
     return game;

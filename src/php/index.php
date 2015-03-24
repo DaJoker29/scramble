@@ -14,6 +14,22 @@
         <div class="jumbotron">
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
+            <p>
+            <div id="diffSelect" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success">
+                    <input type="radio" name="easy">Easy
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="medium">Medium
+                </label>
+                <label class="btn btn-warning">
+                    <input type="radio" name="hard">Hard
+                </label>
+                <label class="btn btn-danger">
+                    <input type="radio" name="stupid">Stupid
+                </label>
+            </div>
+            </p>
             <span class="badge">Score: <span id="score"></span></span>
             <a href="" onclick="scramble.clearScore();return false;">Clear</a>
         </div>
