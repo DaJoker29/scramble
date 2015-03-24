@@ -10,17 +10,46 @@
 </head>
 <body>
     <main class="container">
+        <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Success</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            That is correct
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="warning" class="alert alert-danger" role="alert">This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.</div>
         <div class="jumbotron">
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-                Score <span id="score" class="badge"></span>
+            <div id="diffSelect" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success">
+                    <input type="radio" name="easy">Easy
+                </label>
+                <label class="btn btn-primary">
+                    <input type="radio" name="medium">Medium
+                </label>
+                <label class="btn btn-warning">
+                    <input type="radio" name="hard">Hard
+                </label>
+                <label class="btn btn-danger">
+                    <input type="radio" name="stupid">Stupid
+                </label>
+            </div>
             </p>
+            <span class="badge">Score: <span id="score"></span></span>
+            <a href="" onclick="scramble.clearScore();return false;">Clear</a>
         </div>
         <form class="well" action="javascript:void(0);">
             <div class="form-group">
-                <input id="answer" type="text" class="form-control" placeholder="Type your answer here">
+                <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
         </form>
     </main>
@@ -32,6 +61,7 @@
             warning.style.display = 'none';
         }
 
+        console.log("Look here to cheat");
         // Load Game
         scramble.run();
     </script>

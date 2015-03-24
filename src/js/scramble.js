@@ -1,7 +1,8 @@
 var scramble = (function(){
     var game = {};
-    var score = document.querySelector('#score');
     var input = document.querySelector('#answer');
+    var diffSelect = document.querySelector('#diffSelect');
+    var modal = document.querySelector('#success-modal');
     var word = '';
 
     String.prototype.shuffle = function() {
@@ -32,35 +33,17 @@ var scramble = (function(){
     var setWord = function() {
         getJSON(function(response) {
             result = JSON.parse(response);
-            var index = Math.floor(Math.random() * (result.words.length));
+            var index = Math.floor(Math.random() * (result[game.diff].length));
 
-            word = result.words[index];
+            word = result[game.diff][index];
             drawWord();
         });
-    };
-
-
-    var redrawScore = function() {
-        score.textContent = score.dataset.score;
-    };
-
-    var saveScore = function() {
-        localStorage.setItem('score', score.dataset.score);
-        redrawScore();
-    };
-
-    var getScore = function() {
-        score.dataset.score = localStorage.score || 0;
-    };
-
-    var addScore = function ( points ) {
-        score.dataset.score =  parseInt(score.dataset.score) + points;
     };
 
     var drawWord = function() {
         var element;
         var scrambled = word.shuffle();
-        console.log(word);
+        console.log(word); // For cheating
 
         if(document.querySelector('#scrambled')) {
             element = document.querySelector('#scrambled');
@@ -75,25 +58,105 @@ var scramble = (function(){
         }
     };
 
+    var diffListener = function ( e ) {
+         if (e.target !== e.currentTarget && e.target.type === 'radio') {
+            if (['easy', 'medium', 'hard', 'stupid'].indexOf(e.target.name) > -1) {
+                game.diff = e.target.name;
+                game.saveDiff();
+                game.destroy();
+            }
+        }
+        e.stopPropagation();
+        input.focus();
+    };
+
+    var answerListener = function ( e ) {
+        if(e.target.value.toLowerCase() === word.toLowerCase()) {
+            $('#success-modal').modal();
+            setTimeout(function() {
+                $('#success-modal').modal('hide');
+            }, 900);
+
+            $('#success-modal').on('hidden.bs.modal', function (e) {
+                input.focus();
+            });
+            game.addScore(game.diff);
+            input.value = '';
+            game.destroy();
+        }
+    };
+
+    game.redrawScore = function() {
+        if (!localStorage.score) {
+            localStorage.score = 0;
+        }
+        score.textContent = localStorage.score;
+    };
+
+    game.clearScore = function() {
+        localStorage.score = 0;
+        game.redrawScore();
+    };
+
+    game.addScore = function ( diff ) {
+        var pts;
+        switch(diff) {
+            case 'easy': 
+                pts = 5;
+                break;
+            case 'medium':
+                pts = 10;
+                break;
+            case 'hard':
+                pts = 15;
+                break;
+            case 'stupid':
+                pts = 25;
+                break;
+            default: 
+                pts = 0;
+        }
+
+        localStorage.score = parseInt(localStorage.score) + pts;
+    };
+
     game.destroy = function() {
         window.scramble = null;
         window.scramble = game;
+        diffSelect.removeEventListener('click', diffListener);
         window.scramble.run();
     };
 
-    game.run = function() {
-        getScore();
-        redrawScore();
+    game.saveDiff = function() {
+        localStorage.diff = game.diff;
+    };
+
+    game.updateDiff = function() {
+        if(document.querySelector('.active')) {
+            var oldElement = document.querySelector('.active');
+            oldElement.classList.remove('active');            
+        }
+
+        var element = document.querySelector('input[name=' + game.diff);
+        element.checked = '';
+        element.parentNode.classList.add('active');
+    };
+
+    game.run = function( settings ) {
+        if (localStorage.diff) {
+            game.diff = localStorage.diff;
+            game.updateDiff();
+        } else {
+            game.diff = 'easy';
+            game.saveDiff();
+            game.updateDiff();
+        }
+
+        game.redrawScore();
         setWord();
-        input.addEventListener( 'input', function(e) {
-            if(e.target.value === word) {
-                alert('You won!');
-                addScore(5);
-                saveScore();
-                input.value = '';
-                game.destroy();
-            }
-        });
+        input.addEventListener( 'input', answerListener);
+
+        diffSelect.addEventListener( 'click', diffListener);
     };
 
     return game;
