@@ -19,19 +19,22 @@ var scramble = (function (game) {
         } else {
             switch(input) {
                 case 'easy': 
-                    pts = 5;
-                    break;
-                case 'medium':
                     pts = 10;
                     break;
-                case 'hard':
+                case 'medium':
                     pts = 15;
                     break;
-                case 'stupid':
+                case 'hard':
                     pts = 25;
+                    break;
+                case 'stupid':
+                    pts = 50;
                     break;
                 default: 
                     pts = 0;
+            }
+            if(game.highlight.current === 'on') {
+                pts = Math.floor(pts / 2);
             }
         }
 
