@@ -5,6 +5,7 @@
     <title>Scramble</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="style.css">
 <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script>
@@ -41,16 +42,19 @@
                 <label class="btn btn-success">
                     <input type="radio" name="easy">Easy
                 </label>
-                <label class="btn btn-primary">
+                <label class="btn btn-success">
                     <input type="radio" name="medium">Medium
                 </label>
-                <label class="btn btn-warning">
+                <label class="btn btn-success">
                     <input type="radio" name="hard">Hard
                 </label>
                 <label class="btn btn-danger">
                     <input type="radio" name="stupid">Stupid
                 </label>
             </div>
+            </p>
+            <p>
+                <button id="highlightToggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
             </p>
             <span class="badge">Score: <span id="score"></span></span>
             <a href="" onclick="scramble.score.clear();return false;">Clear</a>
