@@ -31,7 +31,7 @@ var scramble = (function ( game ) {
     var draw = function() {
         var element;
         game.word.scrambled = game.word.current.shuffle();
-        console.log(game.word.current); // For cheating
+        console.log(game.word.scrambled + ' => ' + game.word.current.toUpperCase()); // For cheating
 
         if(document.querySelector('#scrambled')) {
             element = document.querySelector('#scrambled');

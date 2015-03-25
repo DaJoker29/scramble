@@ -32,7 +32,7 @@ var scramble = (function( game ){
     };
 
     game.destroy = function() {
-        window.scramble = null;
+        // window.scramble = null;
         window.scramble = game;
         diffSelect.removeEventListener('click', diffListener);
         input.removeEventListener('input', answerListener);
