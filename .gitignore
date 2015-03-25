@@ -32,3 +32,6 @@ public
 
 # Sass Cache
 .sass-cache
+
+# Documentation
+doc

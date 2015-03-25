@@ -6,12 +6,16 @@ module.exports = function(grunt) {
                 tasks: ['sass:dev']
             },
             js: {
-                files: ['src/js/**/*.js', 'src/js/**/*.json'],
-                tasks: ['jshint', 'uglify:dev', 'copy:json']
+                files: ['src/js/**/*.js'],
+                tasks: ['jshint', 'uglify:dev']
             },
-            php: {
-                files: ['src/php/**/*.php'],
-                tasks: ['copy:php']
+            templates: {
+                files: ['src/templates/**/*.*'],
+                tasks: ['copy']
+            },
+            doc: {
+                files: ['public/script.js'],
+                tasks: ['jsdoc']
             },
             livereload: {
                 options: { livereload: true },
@@ -90,17 +94,21 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            php: {
-                cwd: 'src/php',
-                src: ['**/*.php', '!**/_*.php'],
+            templates: {
+                cwd: 'src/templates',
+                src: ['**/*.*', '!**/_*.*'],
                 dest: 'public',
                 expand: true
-            },
-            json: {
-                cwd: 'src/js',
-                src: ['**/*.json'],
-                dest: 'public',
-                expand: true
+            }
+        },
+        jsdoc: {
+            all: {
+                src: ['public/script.js'],
+                options: {
+                    access: 'all',
+                    readme: 'README.md',
+                    package: 'package.json'
+                }
             }
         }
 
@@ -113,9 +121,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-jsdoc');
 
     grunt.registerTask('config', 'Check configuration files for errors', ['jshint:config']);
-    grunt.registerTask('dev', 'Build development version of project', ['clean', 'copy', 'jshint', 'uglify:dev', 'sass:dev', 'autoprefixer:dev']);
-    grunt.registerTask('prod', 'Build production version of project', ['clean', 'copy', 'jshint', 'uglify:prod', 'sass:prod', 'autoprefixer:prod']);
+    grunt.registerTask('dev', 'Build development version of project', ['clean', 'copy', 'jshint', 'uglify:dev', 'sass:dev', 'autoprefixer:dev', 'jsdoc']);
+    grunt.registerTask('prod', 'Build production version of project', ['clean', 'copy', 'jshint', 'uglify:prod', 'sass:prod', 'autoprefixer:prod', 'jsdoc']);
     grunt.registerTask('default', 'Build development version and run watch server', ['dev', 'watch']);
 };
