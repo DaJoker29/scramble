@@ -60,6 +60,7 @@
             <a href="" onclick="scramble.score.clear();return false;">Clear</a>
         </div>
         <form class="well" action="javascript:void(0);">
+        <p><span class="label label-success">Score Multiplier: <span id="multiplier"></span></span></p>
             <div class="form-group">
                 <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>

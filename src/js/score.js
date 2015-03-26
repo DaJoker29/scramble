@@ -19,23 +19,28 @@ var scramble = (function (game) {
         } else {
             switch(input) {
                 case 'easy': 
-                    pts = 5;
-                    break;
-                case 'medium':
                     pts = 10;
                     break;
-                case 'hard':
+                case 'medium':
                     pts = 15;
                     break;
-                case 'stupid':
+                case 'hard':
                     pts = 25;
+                    break;
+                case 'stupid':
+                    pts = 50;
                     break;
                 default: 
                     pts = 0;
             }
+            if(game.highlight.current === 'on') {
+                pts = Math.floor(pts / 2);
+            }
         }
 
-        localStorage.score = parseInt(localStorage.score) + pts;
+        var multiplier = game.multiplier.current.toFixed(1);
+        var newScore = pts * multiplier;
+        localStorage.score = parseInt(localStorage.score) + Math.floor(newScore);
         game.score.update();
     };
 
