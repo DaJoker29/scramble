@@ -12,6 +12,7 @@ var scramble = (function ( game ) {
             game.highlight.current = localStorage.highlight = 'off';
             var el = document.querySelector('form');
             el.style.backgroundColor = '';
+            game.destroy();
         }
     };
 

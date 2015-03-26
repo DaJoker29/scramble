@@ -38,7 +38,9 @@ var scramble = (function (game) {
             }
         }
 
-        localStorage.score = parseInt(localStorage.score) + pts;
+        var multiplier = game.multiplier.current.toFixed(1);
+        var newScore = pts * multiplier;
+        localStorage.score = parseInt(localStorage.score) + Math.floor(newScore);
         game.score.update();
     };
 

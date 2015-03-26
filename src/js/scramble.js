@@ -51,7 +51,7 @@ var scramble = (function( game ){
     };
 
     game.destroy = function() {
-        // window.scramble = null;
+        game.multiplier.stop();        
         window.scramble = game;
         diffSelect.removeEventListener('click', diffListener);
         input.removeEventListener('input', answerListener);
@@ -83,6 +83,7 @@ var scramble = (function( game ){
         input.addEventListener( 'input', highlightListener);
         diffSelect.addEventListener( 'click', diffListener);
         highlightToggle.addEventListener( 'click', toggleListener);
+        game.multiplier.start();
     };
 
     return game;
