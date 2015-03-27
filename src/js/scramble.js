@@ -1,19 +1,19 @@
-var scramble = (function( game ){
+var Scramble = (function( game ){
     var input = document.querySelector('#answer');
-    var diffSelect = document.querySelector('#diffSelect');
+    var DifficultySelect = document.querySelector('#DifficultySelect');
     var modal = document.querySelector('#success-modal');
     var highlight = document.querySelector('form');
-    var highlightToggle = document.querySelector('#highlightToggle');
+    var highlightToggle = document.querySelector('#highlight-toggle');
 
-    var toggleListener = function() {
-        game.highlight.toggle();
+    var _toggleListener = function() {
+        game.Highlight.toggle();
     };
 
-    var diffListener = function ( e ) {
+    var _difficultyListener = function ( e ) {
          if (e.target !== e.currentTarget && e.target.type === 'radio') {
             if (['easy', 'medium', 'hard', 'stupid'].indexOf(e.target.name) > -1) {
-                game.diff.current = e.target.name;
-                game.diff.saveDiff();
+                game.Difficulty.current = e.target.name;
+                game.Difficulty.saveDifficulty();
                 game.destroy();
             }
         }
@@ -21,12 +21,12 @@ var scramble = (function( game ){
         input.focus();
     };
 
-    var highlightListener = function( e ) {
-        if(localStorage.highlight === 'on') {
+    var _highlightListener = function( e ) {
+        if(localStorage.Highlight === 'on') {
             if(e.target.value.length === 0)
             {
                 highlight.style.backgroundColor = '';
-            } else if (game.word.current.toLowerCase().lastIndexOf(e.target.value.toLowerCase(), 0) === 0) {
+            } else if (game.Word.current.toLowerCase().lastIndexOf(e.target.value.toLowerCase(), 0) === 0) {
                 highlight.style.backgroundColor = 'limegreen';
             } else{
                 highlight.style.backgroundColor = 'tomato';
@@ -34,57 +34,54 @@ var scramble = (function( game ){
         }
     };
 
-    var answerListener = function ( e ) {
-        if(e.target.value.toLowerCase() === game.word.current.toLowerCase()) {
-            $('#success-modal').modal();
+    var _answerListener = function ( e ) {
+        if(e.target.value.toLowerCase() === game.Word.current.toLowerCase()) {
+            $('#correctLabel').toggleClass('invisible');
             setTimeout(function() {
-                $('#success-modal').modal('hide');
-            }, 900);
+                $('#correctLabel').toggleClass('invisible');
+            }, 1200);
 
-            $('#success-modal').on('hidden.bs.modal', function (e) {
-                input.focus();
-            });
-            game.score.add(game.diff.current);
+            game.Score.add(game.Difficulty.current);
             input.value = '';
             game.destroy();
         }
     };
 
     game.destroy = function() {
-        game.multiplier.stop();        
-        window.scramble = game;
-        diffSelect.removeEventListener('click', diffListener);
-        input.removeEventListener('input', answerListener);
-        input.removeEventListener('input', highlightListener);
-        highlightToggle.removeEventListener( 'click', toggleListener);
+        game.Multiplier.stop();        
+        window.Scramble = game;
+        DifficultySelect.removeEventListener('click', _difficultyListener);
+        input.removeEventListener('input', _answerListener);
+        input.removeEventListener('input', _highlightListener);
+        highlightToggle.removeEventListener( 'click', _toggleListener);
         highlight.style.backgroundColor = '';
-        window.scramble.run();
+        window.Scramble.run();
     };
 
     game.run = function( settings ) {
-        if (localStorage.diff) {
-            game.diff.current = localStorage.diff;
-            game.diff.updateDiff();
+        if (localStorage.Difficulty) {
+            game.Difficulty.current = localStorage.Difficulty;
+            game.Difficulty.updateDifficulty();
         } else {
-            game.diff.current = 'easy';
-            game.diff.saveDiff();
-            game.diff.updateDiff();
+            game.Difficulty.current = 'easy';
+            game.Difficulty.saveDifficulty();
+            game.Difficulty.updateDifficulty();
         }
 
-        if(localStorage.highlight === 'on') {
-            var toggle = document.querySelector('#highlightToggle');
+        if(localStorage.Highlight === 'on') {
+            var toggle = document.querySelector('#highlight-toggle');
             toggle.setAttribute('aria-pressed', true);
             toggle.classList.add('active');
         }
 
-        game.score.update();
-        game.word.set();
-        input.addEventListener( 'input', answerListener);
-        input.addEventListener( 'input', highlightListener);
-        diffSelect.addEventListener( 'click', diffListener);
-        highlightToggle.addEventListener( 'click', toggleListener);
-        game.multiplier.start();
+        game.Score.update();
+        game.Word.set();
+        input.addEventListener( 'input', _answerListener);
+        input.addEventListener( 'input', _highlightListener);
+        DifficultySelect.addEventListener( 'click', _difficultyListener);
+        highlightToggle.addEventListener( 'click', _toggleListener);
+        game.Multiplier.start();
     };
 
     return game;
-}(scramble || {}));
+}(Scramble || {}));

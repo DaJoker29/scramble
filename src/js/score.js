@@ -1,19 +1,19 @@
-var scramble = (function (game) {
+var Scramble = (function (game) {
     
-    game.score = {};
+    game.Score = {};
 
-    var scoreEl = document.querySelector('#score');
+    var ScoreEl = document.querySelector('#Score');
 
-    game.score.update = function() {
-        scoreEl.textContent = localStorage.score = localStorage.score || 0;
+    game.Score.update = function() {
+        ScoreEl.textContent = localStorage.Score = localStorage.Score || 0;
     };
 
-    game.score.clear = function() {
-        localStorage.score = 0;
-        game.score.update();
+    game.Score.clear = function() {
+        localStorage.Score = 0;
+        game.Score.update();
     };
 
-    game.score.add = function ( input ) {
+    game.Score.add = function ( input ) {
         if(typeof(input) === 'number') {
             pts = input;
         } else {
@@ -33,16 +33,16 @@ var scramble = (function (game) {
                 default: 
                     pts = 0;
             }
-            if(game.highlight.current === 'on') {
+            if(game.Highlight.current === 'on') {
                 pts = Math.floor(pts / 2);
             }
         }
 
-        var multiplier = game.multiplier.current.toFixed(1);
-        var newScore = pts * multiplier;
-        localStorage.score = parseInt(localStorage.score) + Math.floor(newScore);
-        game.score.update();
+        var Multiplier = game.Multiplier.current.toFixed(1);
+        var newScore = pts * Multiplier;
+        localStorage.Score = parseInt(localStorage.Score) + Math.floor(newScore);
+        game.Score.update();
     };
 
     return game;
-}(scramble || {}));
+}(Scramble || {}));

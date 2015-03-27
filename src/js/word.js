@@ -1,7 +1,7 @@
-var scramble = (function ( game ) {
+var Scramble = (function ( game ) {
 
-    game.word = {};
-    game.word.current = '';
+    game.Word = {};
+    game.Word.current = '';
 
     String.prototype.shuffle = function() {
         var a = this.split('');
@@ -16,7 +16,7 @@ var scramble = (function ( game ) {
         return a.join('');
     };
 
-    var getJSON = function(callback) {
+    var _getJSON = function(callback) {
         var request = new XMLHttpRequest();
         request.open('GET', 'dictionary.json', true);
         request.onload = function() {
@@ -28,33 +28,24 @@ var scramble = (function ( game ) {
         request.send();
     };
 
-    var draw = function() {
-        var element;
-        game.word.scrambled = game.word.current.shuffle();
-        console.log(game.word.scrambled + ' => ' + game.word.current.toUpperCase()); // For cheating
+    var _draw = function() {
+        var element = document.querySelector('#scrambled');
+        var scrambled = game.Word.current.shuffle();
+        element.textContent = scrambled.toUpperCase();
 
-        if(document.querySelector('#scrambled')) {
-            element = document.querySelector('#scrambled');
-            element.innerHTML = 'The word to unscramble is: <mark><strong>' + game.word.scrambled.toUpperCase() + '</strong></mark>';
-        } else {
-            var page = document.querySelector('main');
-            element = document.createElement('h3');
-            element.id = 'scrambled';
-            element.classList.add('well');
-            element.innerHTML = 'The word to unscramble is: <mark><strong>' + game.word.scrambled.toUpperCase() + '</strong></mark>';
-            page.appendChild(element);
-        }
+        // Print unscrambled word out to console
+        console.log(scrambled + ' => ' + game.Word.current.toUpperCase());
     };
 
-    game.word.set = function() {
-        getJSON(function(response) {
+    game.Word.set = function() {
+        _getJSON(function(response) {
             result = JSON.parse(response);
-            var index = Math.floor(Math.random() * (result[game.diff.current].length));
+            var index = Math.floor(Math.random() * (result[game.Difficulty.current].length));
 
-            game.word.current = result[game.diff.current][index];
-            draw();
+            game.Word.current = result[game.Difficulty.current][index];
+            _draw();
         });
     };
 
     return game;
-}( scramble || {}));
+}( Scramble || {}));

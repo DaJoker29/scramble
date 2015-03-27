@@ -1,15 +1,13 @@
-var scramble = (function ( game ) {
+var Scramble = (function ( game ) {
+    
+    game.Highlight = {};
+    game.Highlight.current = localStorage.Highlight = localStorage.Highlight || 'off';
 
-    var el = document.querySelector('#highlightToggle');
-
-    game.highlight = {};
-    game.highlight.current = localStorage.highlight = localStorage.highlight || 'off';
-
-    game.highlight.toggle = function() {
-        if(game.highlight.current === 'off') {
-            game.highlight.current = localStorage.highlight = 'on';
+    game.Highlight.toggle = function() {
+        if(game.Highlight.current === 'off') {
+            game.Highlight.current = localStorage.Highlight = 'on';
         } else {
-            game.highlight.current = localStorage.highlight = 'off';
+            game.Highlight.current = localStorage.Highlight = 'off';
             var el = document.querySelector('form');
             el.style.backgroundColor = '';
             game.destroy();
@@ -17,4 +15,4 @@ var scramble = (function ( game ) {
     };
 
     return game;
-}( scramble || {}));
+}( Scramble || {}));

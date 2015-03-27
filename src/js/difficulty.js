@@ -1,21 +1,21 @@
-var scramble = (function (game) {
+var Scramble = (function (game) {
 
-    game.diff = {};
+    game.Difficulty = {};
 
-    game.diff.saveDiff = function() {
-        localStorage.diff = game.diff.current;
+    game.Difficulty.saveDifficulty = function() {
+        localStorage.Difficulty = game.Difficulty.current;
     };
 
-    game.diff.updateDiff = function() {
+    game.Difficulty.updateDifficulty = function() {
         if(document.querySelector('.active')) {
             var oldElement = document.querySelector('.active');
             oldElement.classList.remove('active');            
         }
 
-        var element = document.querySelector('input[name=' + game.diff.current);
+        var element = document.querySelector('input[name=' + game.Difficulty.current);
         element.checked = '';
         element.parentNode.classList.add('active');
     };
 
     return game;
-}( scramble || {}));
+}( Scramble || {}));
