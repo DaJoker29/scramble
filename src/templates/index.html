@@ -1,21 +1,28 @@
 <html>
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" >
+
     <title>Scramble</title>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="style.css">
-<script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<script>
-    if (document.querySelector && window.addEventListener) {
-        document.documentElement.classList.add('js');
-    }
-</script>
-<style>
-    .js #warning { display: none; }
-</style>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+    <script>
+        if (document.querySelector && window.addEventListener) {
+            document.documentElement.classList.add('js');
+        }
+    </script>
+
+    <style>
+        .js #warning { display: none; }
+    </style>
+
 </head>
 <body>
     <main class="container">
@@ -38,14 +45,14 @@
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-            <div id="diffSelect" class="btn-group" data-toggle="buttons">
-                <label class="btn btn-success">
+            <div id="DifficultySelect" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
                     <input type="radio" name="easy">Easy
                 </label>
-                <label class="btn btn-success">
+                <label class="btn btn-primary">
                     <input type="radio" name="medium">Medium
                 </label>
-                <label class="btn btn-success">
+                <label class="btn btn-primary">
                     <input type="radio" name="hard">Hard
                 </label>
                 <label class="btn btn-danger">
@@ -54,24 +61,31 @@
             </div>
             </p>
             <p>
-                <button id="highlightToggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
+                <button id="highlight-toggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
             </p>
-            <span class="badge">Score: <span id="score"></span></span>
-            <a href="" onclick="scramble.score.clear();return false;">Clear</a>
+            <span class="badge">Score: <span id="Score"></span></span>
+            <a href="" onclick="Scramble.Score.clear();return false;">Clear</a>
         </div>
         <form class="well" action="javascript:void(0);">
-        <p><span class="label label-success">Score Multiplier: <span id="multiplier"></span></span></p>
+            <p>
+                <span class="label label-info">Score Multiplier: 
+                    <span id="Multiplier"></span>
+                </span>
+                &nbsp;
+                <span id="correctLabel" class="label label-success invisible">Correct!</span>
+            </p>
             <div class="form-group">
                 <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
         </form>
+        <h3 class="well">The word to unscramble is: 
+            <mark><strong><span id="scrambled"></span></strong></mark>
+        </h3>
     </main>
     <script src="script.js"></script>
     <script>
-
-        console.log("Look here to cheat");
-        // Load Game
-        scramble.run();
+        console.log('%cNote: Cheaters never prosper.', 'background: tomato; color: black;');
+        Scramble.run();
     </script>
 </body>
 </html>
