@@ -1,8 +1,21 @@
-var Scramble = (function ( game ) {
+/**
+ * Word Module
+ *
+ * @namespace Word
+ * @memberOf Scramble
+ */
+var Scramble = (function ( Game ) {
 
-    game.Word = {};
-    game.Word.current = '';
+    Game.Word = {};
+    Game.Word.current = '';
 
+    /**
+     * Shuffle string
+     * @global
+     *
+     * @method
+     * @return {String} Shuffled String
+     */
     String.prototype.shuffle = function() {
         var a = this.split('');
         var n = a.length;
@@ -16,6 +29,15 @@ var Scramble = (function ( game ) {
         return a.join('');
     };
 
+    /**
+     * Retrive word from dictionary
+     * @private
+     * @memberOf Scramble.Word
+     *
+     * @function
+     *
+     * @param  {Function} callback Function to pass data to
+     */
     var _getJSON = function(callback) {
         var request = new XMLHttpRequest();
         request.open('GET', 'dictionary.json', true);
@@ -28,24 +50,38 @@ var Scramble = (function ( game ) {
         request.send();
     };
 
+    /**
+     * Display scrambled word
+     * @private
+     * @memberOf Scramble.Word
+     *
+     * @function
+     */
     var _draw = function() {
         var element = document.querySelector('#scrambled');
-        var scrambled = game.Word.current.shuffle();
+        var scrambled = Game.Word.current.shuffle();
         element.textContent = scrambled.toUpperCase();
 
         // Print unscrambled word out to console
-        console.log(scrambled + ' => ' + game.Word.current.toUpperCase());
+        console.log(scrambled + ' => ' + Game.Word.current.toUpperCase());
     };
 
-    game.Word.set = function() {
+    /**
+     * Select word to scramble
+     * @public
+     * @memberOf Scramble.Word
+     *
+     * @function
+     */
+    Game.Word.set = function() {
         _getJSON(function(response) {
             result = JSON.parse(response);
-            var index = Math.floor(Math.random() * (result[game.Difficulty.current].length));
+            var index = Math.floor(Math.random() * (result[Game.Difficulty.current].length));
 
-            game.Word.current = result[game.Difficulty.current][index];
+            Game.Word.current = result[Game.Difficulty.current][index];
             _draw();
         });
     };
 
-    return game;
+    return Game;
 }( Scramble || {}));

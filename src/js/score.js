@@ -1,19 +1,51 @@
-var Scramble = (function (game) {
+/**
+ * Score Module
+ *
+ * @namespace Score
+ * @memberOf Scramble
+ */
+var Scramble = (function (Game) {
     
-    game.Score = {};
+    Game.Score = {};
 
+    /**
+     * @private
+     * @memberOf Scramble.Score
+     */
     var ScoreEl = document.querySelector('#Score');
 
-    game.Score.update = function() {
+    /**
+     * Update current score
+     * @public
+     * @memberOf Scramble.Score
+     *
+     * @function update
+     */
+    Game.Score.update = function() {
         ScoreEl.textContent = localStorage.Score = localStorage.Score || 0;
     };
 
-    game.Score.clear = function() {
+    /**
+     * Clear current score
+     * @public
+     * @memberOf Scramble.Score
+     *
+     * @function clear
+     */
+    Game.Score.clear = function() {
         localStorage.Score = 0;
-        game.Score.update();
+        Game.Score.update();
     };
 
-    game.Score.add = function ( input ) {
+    /**
+     * Add to current score based on either input points or difficulty
+     * @public
+     * @memberOf Scramble.Score
+     *
+     * @function add
+     * @param {number|string} input Number (points) or String (difficulty)
+     */
+    Game.Score.add = function ( input ) {
         if(typeof(input) === 'number') {
             pts = input;
         } else {
@@ -33,16 +65,16 @@ var Scramble = (function (game) {
                 default: 
                     pts = 0;
             }
-            if(game.Highlight.current === 'on') {
+            if(Game.Highlight.current === 'on') {
                 pts = Math.floor(pts / 2);
             }
         }
 
-        var Multiplier = game.Multiplier.current.toFixed(1);
+        var Multiplier = Game.Multiplier.current.toFixed(1);
         var newScore = pts * Multiplier;
         localStorage.Score = parseInt(localStorage.Score) + Math.floor(newScore);
-        game.Score.update();
+        Game.Score.update();
     };
 
-    return game;
+    return Game;
 }(Scramble || {}));

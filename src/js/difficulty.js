@@ -1,21 +1,41 @@
-var Scramble = (function (game) {
+/**
+ * Difficulty Module
+ *
+ * @namespace Difficulty
+ * @memberOf Scramble
+ */
+var Scramble = (function (Game) {
 
-    game.Difficulty = {};
+    Game.Difficulty = {};
 
-    game.Difficulty.saveDifficulty = function() {
-        localStorage.Difficulty = game.Difficulty.current;
+    /**
+     * Save currently set difficulty
+     * @public
+     * @memberOf Scramble.Difficulty
+     * 
+     * @method saveDifficulty
+     */
+    Game.Difficulty.saveDifficulty = function() {
+        localStorage.Difficulty = Game.Difficulty.current;
     };
 
-    game.Difficulty.updateDifficulty = function() {
+    /**
+     * Change difficulty
+     * @public
+     * @memberOf Scramble.Difficulty
+     * 
+     * @method updateDifficulty
+     */
+    Game.Difficulty.updateDifficulty = function() {
         if(document.querySelector('.active')) {
             var oldElement = document.querySelector('.active');
             oldElement.classList.remove('active');            
         }
 
-        var element = document.querySelector('input[name=' + game.Difficulty.current);
+        var element = document.querySelector('input[name=' + Game.Difficulty.current);
         element.checked = '';
         element.parentNode.classList.add('active');
     };
 
-    return game;
+    return Game;
 }( Scramble || {}));

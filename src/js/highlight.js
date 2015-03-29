@@ -1,18 +1,38 @@
-var Scramble = (function ( game ) {
+/**
+ * Highlight Module
+ *
+ * @namespace Highlight
+ * @memberOf Scramble
+ */
+var Scramble = (function ( Game ) {
     
-    game.Highlight = {};
-    game.Highlight.current = localStorage.Highlight = localStorage.Highlight || 'off';
+    Game.Highlight = {};
+    /**
+     * Highlight option
+     * @public
+     * @memberOf Scramble.Highlight
+     * 
+     * @var current
+     */
+    Game.Highlight.current = localStorage.Highlight = localStorage.Highlight || 'off';
 
-    game.Highlight.toggle = function() {
-        if(game.Highlight.current === 'off') {
-            game.Highlight.current = localStorage.Highlight = 'on';
+    /**
+     * Toggle Highlight option
+     * @public
+     * @memberOf Scramble.Highlight
+     * 
+     * @method toggle
+     */
+    Game.Highlight.toggle = function() {
+        if(Game.Highlight.current === 'off') {
+            Game.Highlight.current = localStorage.Highlight = 'on';
         } else {
-            game.Highlight.current = localStorage.Highlight = 'off';
+            Game.Highlight.current = localStorage.Highlight = 'off';
             var el = document.querySelector('form');
             el.style.backgroundColor = '';
-            game.destroy();
+            Game.destroy();
         }
     };
 
-    return game;
+    return Game;
 }( Scramble || {}));
