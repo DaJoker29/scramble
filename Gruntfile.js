@@ -104,6 +104,7 @@ module.exports = function(grunt) {
         jsdoc: {
             all: {
                 src: ['public/script.js'],
+                dest: 'public/doc',
                 options: {
                     access: 'all',
                     readme: 'README.md',

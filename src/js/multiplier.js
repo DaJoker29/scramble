@@ -1,26 +1,54 @@
-Scramble = (function ( game ) {
+/**
+ * Multiplier Module
+ *
+ * @namespace Multiplier
+ * @memberOf Scramble
+ */
+Scramble = (function ( Game ) {
 
     var Multiplier = document.querySelector('#Multiplier');
     var parent = Multiplier.parentNode;
     var interval;
 
-    game.Multiplier = {};
+    Game.Multiplier = {};
 
+
+    /**
+     * Display current multiplier
+     * @private
+     * @memberOf Scramble.Multiplier
+     *
+     * @function
+     */
     var _display = function() {
-        Multiplier.textContent = 'x' + game.Multiplier.current.toFixed(1);
+        Multiplier.textContent = 'x' + Game.Multiplier.current.toFixed(1);
     };
 
-    game.Multiplier.stop = function() {
+    /**
+     * Stop Multiplier and reset background
+     * @public
+     * @memberOf Scramble.Multiplier
+     *
+     * @function stop
+     */
+    Game.Multiplier.stop = function() {
         clearInterval(interval);
         parent.className = 'label label-info';
     };
 
-    game.Multiplier.start = function() {
-        var current = game.Multiplier.current = 2.2;
+    /**
+     * Start Multiplier
+     * @public
+     * @memberOf Scramble.Multiplier
+     *
+     * @function start
+     */
+    Game.Multiplier.start = function() {
+        var current = Game.Multiplier.current = 2.2;
         _display();
         interval = setInterval(function() {
-            if(game.Multiplier.current > 0.1) {
-                current = game.Multiplier.current -= 0.1;
+            if(Game.Multiplier.current > 0.1) {
+                current = Game.Multiplier.current -= 0.1;
                 _display();
 
                 if(current < 1.6 && current > 1.2) {
@@ -37,5 +65,5 @@ Scramble = (function ( game ) {
         }, 1000);            
     };
 
-    return game;
+    return Game;
 }( Scramble || {} ));
