@@ -14,6 +14,6 @@ Word Scramble Game
 
 - [x] Change Module names (scramble -> Scramble, game -> Game)
 - [x] **DOCUMENTATION!!!!**
-- [ ] Tooltips (or modal) with information about the various settings and fields.
+- [x] Tooltips (or modal) with information about the various settings and fields.
 - [ ] Find more words to add to the dictionary (maybe pull from an online API)
 - [ ] Add a more challenging point-reducing setting (Multiplier keeps going below 0. Negative multipliers subtract that amount from your current score.)

@@ -45,32 +45,37 @@
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-            <div id="DifficultySelect" class="btn-group" data-toggle="buttons">
-                <label class="btn btn-primary">
-                    <input type="radio" name="easy">Easy
-                </label>
-                <label class="btn btn-primary">
-                    <input type="radio" name="medium">Medium
-                </label>
-                <label class="btn btn-primary">
-                    <input type="radio" name="hard">Hard
-                </label>
-                <label class="btn btn-danger">
-                    <input type="radio" name="stupid">Stupid
-                </label>
-            </div>
+                <div id="DifficultySelect" class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-primary">
+                        <input type="radio" name="easy">Easy
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="medium">Medium
+                    </label>
+                    <label class="btn btn-primary">
+                        <input type="radio" name="hard">Hard
+                    </label>
+                    <label class="btn btn-danger">
+                        <input type="radio" name="stupid">Stupid
+                    </label>
+                </div>
             </p>
             <p>
                 <button id="highlight-toggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
+                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Changes background to show if current answer is correct. You also earn half the points."></span>
             </p>
-            <span class="badge">Score: <span id="Score"></span></span>
-            <a href="" onclick="Scramble.Score.clear();return false;">Clear</a>
+            <p>
+                <span class="badge">Score: <span id="Score"></span></span>
+                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Higher difficulty levels earn more points with each correct answer."></span>
+            </p>
         </div>
         <form class="well" action="javascript:void(0);">
             <p>
                 <span class="label label-info">Score Multiplier: 
                     <span id="Multiplier"></span>
                 </span>
+                &nbsp;
+                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Final score is score based on difficulty (which is halved if 'Highlight Answers' is selected) and multiplied by the Score Multiplier."></span>
                 &nbsp;
                 <span id="correctLabel" class="label label-success invisible">Correct!</span>
             </p>
@@ -84,6 +89,7 @@
     </main>
     <script src="script.js"></script>
     <script>
+        $('[data-toggle=tooltip]').tooltip();
         console.log('%cNote: Cheaters never prosper.', 'background: tomato; color: black;');
         Scramble.run();
     </script>
