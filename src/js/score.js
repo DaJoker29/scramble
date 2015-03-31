@@ -46,8 +46,9 @@ var Scramble = (function (Game) {
      * @param {number|string} input Number (points) or String (difficulty)
      */
     Game.Score.add = function ( input ) {
+        var newScore;
         if(typeof(input) === 'number') {
-            pts = input;
+            newScore = input;
         } else {
             switch(input) {
                 case 'easy': 
@@ -68,10 +69,10 @@ var Scramble = (function (Game) {
             if(Game.Highlight.current === 'on') {
                 pts = Math.floor(pts / 2);
             }
+            var Multiplier = Game.Multiplier.current.toFixed(1);
+            newScore = pts * Multiplier;
         }
 
-        var Multiplier = Game.Multiplier.current.toFixed(1);
-        var newScore = pts * Multiplier;
         localStorage.Score = parseInt(localStorage.Score) + Math.floor(newScore);
         Game.Score.update();
     };
