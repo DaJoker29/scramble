@@ -26,72 +26,38 @@
 </head>
 <body>
     <main class="container">
-        <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Success</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            That is correct
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div id="warning" class="alert alert-danger" role="alert">
+            This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.
         </div>
-        <div id="warning" class="alert alert-danger" role="alert">This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.</div>
+
         <div class="jumbotron">
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-                <div id="DifficultySelect" class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                        <input type="radio" name="easy">Easy
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="medium">Medium
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="hard">Hard
-                    </label>
-                    <label class="btn btn-danger">
-                        <input type="radio" name="stupid">Stupid
-                    </label>
-                </div>
-            </p>
-            <p>
-                <button id="highlight-toggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Changes background to show if current answer is correct. You also earn half the points."></span>
-            </p>
-            <p>
-                <span class="badge">Score: <span id="Score"></span></span>
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Higher difficulty levels earn more points with each correct answer."></span>
+                <a href="" onclick="scramble.core.newGame">Start New Game</a>
             </p>
         </div>
-        <form class="well" action="javascript:void(0);">
-            <p>
-                <span class="label label-info">Score Multiplier: 
-                    <span id="Multiplier"></span>
-                </span>
-                &nbsp;
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Final score is score based on difficulty (which is halved if 'Highlight Answers' is selected) and multiplied by the Score Multiplier."></span>
-                &nbsp;
-                <span id="correctLabel" class="label label-success invisible">Correct!</span>
-            </p>
+
+        <form class="well container-fluid" action="javascript:void(0);">
+            <div class="well">
+                <p>
+                    Time left: <span class="timer"></span>
+                </p>
+                <span class="badge">Score: <span id="score"></span></span>
+                <span class="badge">Multiplier: <span id="multiplier"></span></span>
+                <span class="badge invisible">Correct!</span>
+            </div>
+            <div class="well">
+                The word to unscramble is: <mark><strong><span id="scrambled"></span></strong></mark>
+            </div>
             <div class="form-group">
                 <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
         </form>
-        <h3 class="well">The word to unscramble is: 
-            <mark><strong><span id="scrambled"></span></strong></mark>
-        </h3>
     </main>
     <script src="script.js"></script>
     <script>
-        $('[data-toggle=tooltip]').tooltip();
-        console.log('%cNote: Cheaters never prosper.', 'background: tomato; color: black;');
-        Scramble.run();
+        scramble.core.init();
     </script>
 </body>
 </html>
