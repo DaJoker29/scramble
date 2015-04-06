@@ -34,14 +34,15 @@
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-                <a href="" onclick="scramble.core.newGame">Start New Game</a>
+                <a href="#" onclick="scramble.core.newGame()">Start New Game</a>
+                <a href="#" onclick="scramble.core.quit()">Quit Game</a>
             </p>
         </div>
 
         <form class="well container-fluid" action="javascript:void(0);">
             <div class="well">
                 <p>
-                    Time left: <span class="timer"></span>
+                    Time left: <span id="timer"></span>
                 </p>
                 <span class="badge">Score: <span id="score"></span></span>
                 <span class="badge">Multiplier: <span id="multiplier"></span></span>

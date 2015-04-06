@@ -4,10 +4,12 @@ var scramble = (function( game ) {
     var id = null;
 
     timer.start = function ( callback, interval ) {
+        var INTERVAL = interval || 1000;
+
         if (id === null) {
             id = setInterval(function() {
                 callback();
-            }, interval);
+            }, INTERVAL);
         }
     };
 

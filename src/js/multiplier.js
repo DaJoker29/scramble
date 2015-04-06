@@ -4,7 +4,7 @@ var scramble = (function ( game ) {
     var current, id;
 
     multiplier.start = function ( interval, max, min ) {
-        var INTERVAL = interval || 1000;
+        var INTERVAL = interval || 2500;
         var MAX = max || 2.2;
         var MIN = min || 0.1;
 
