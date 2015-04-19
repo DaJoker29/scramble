@@ -51,7 +51,7 @@ var scramble = (function ( game ) {
         var extraTime = document.querySelector('#extraTime');
         var current = multiplier.get();
 
-        if (current > 1) {
+        if (current > 0) {
             skip.style.visibility = 'visible';
         } else {
             skip.style.visibility = 'hidden';
@@ -116,8 +116,12 @@ var scramble = (function ( game ) {
         // Stop timers
         timer.stop();
 
-
         _update(highEl, localStorage.highScore || 0);
+
+        // Hide board
+        [gameEl, skip, reshuffle, extraTime].forEach (function( el) {
+            el.style.visibility = 'hidden';
+        });
     };
 
     core.endTurn = function() {
@@ -142,7 +146,10 @@ var scramble = (function ( game ) {
     };
 
     core.skip = function() {
-        multiplier.subtract();
+        if (multiplier.get() > 1) {
+            multiplier.subtract();
+        }
+
         _update( multiplierEl, multiplier.get());
         _checkHelpers();
 

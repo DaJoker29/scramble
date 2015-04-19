@@ -1,7 +1,6 @@
 var scramble = (function ( game ) {
 
     var score = game.score = {};
-    var DEFAULT = 50;
     var current;
 
 
