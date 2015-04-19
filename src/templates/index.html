@@ -1,97 +1,64 @@
 <html>
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" >
-
     <title>Scramble</title>
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="style.css">
-
     <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
     <script>
         if (document.querySelector && window.addEventListener) {
             document.documentElement.classList.add('js');
         }
     </script>
-
     <style>
-        .js #warning { display: none; }
+        .js .warning { display: none; }
     </style>
-
 </head>
 <body>
     <main class="container">
-        <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Success</h3>
-                    </div>
-                    <div class="modal-body">
-                        <p>
-                            That is correct
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div class="warning alert alert-danger" role="alert">
+            This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.
         </div>
-        <div id="warning" class="alert alert-danger" role="alert">This program requires <strong>Javascript</strong> in order to run. Please enable Javascript within your browser's settings.</div>
         <div class="jumbotron">
             <h1>Scramble</h1>
             <p class="text-muted">A Zero Daedalus Game</p>
             <p>
-                <div id="DifficultySelect" class="btn-group" data-toggle="buttons">
-                    <label class="btn btn-primary">
-                        <input type="radio" name="easy">Easy
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="medium">Medium
-                    </label>
-                    <label class="btn btn-primary">
-                        <input type="radio" name="hard">Hard
-                    </label>
-                    <label class="btn btn-danger">
-                        <input type="radio" name="stupid">Stupid
-                    </label>
-                </div>
+                <a href="#" onclick="scramble.core.newGame()">Start New Game</a>
             </p>
             <p>
-                <button id="highlight-toggle" type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false" autocomplete="off">Highlight Answers</button>
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Changes background to show if current answer is correct. You also earn half the points."></span>
+                <a href="#" onclick="scramble.core.quit()">Quit Game</a>
             </p>
             <p>
-                <span class="badge">Score: <span id="Score"></span></span>
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Higher difficulty levels earn more points with each correct answer."></span>
+                High Score: <span id="highScore"></span>
             </p>
         </div>
-        <form class="well" action="javascript:void(0);">
-            <p>
-                <span class="label label-info">Score Multiplier: 
-                    <span id="Multiplier"></span>
-                </span>
-                &nbsp;
-                <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Final score is score based on difficulty (which is halved if 'Highlight Answers' is selected) and multiplied by the Score Multiplier."></span>
-                &nbsp;
-                <span id="correctLabel" class="label label-success invisible">Correct!</span>
-            </p>
+        <form id="game" style="visibility: hidden;" class="well" action="javascript:void(0);">
+            <div class="well">
+                <p>
+                    Time left: <span id="timer"></span>
+                </p>
+                <span class="badge">Score: <span id="score"></span></span>
+                <span class="badge">Multiplier: <span id="multiplier"></span></span>
+            </div>
+            <div class="well">
+                The word to unscramble is: <mark><strong><span id="scrambled"></span></strong></mark>
+            </div>
             <div class="form-group">
+                <p>
+                    <a href="#" id="skip" onclick="scramble.core.skip()"><span class="badge">Skip</span></a>
+                    <a href="#" id="reshuffle" onclick="scramble.core.reshuffle()"><span class="badge">Reshuffle</span></a>
+                    <a href="#" id="extraTime" onclick="scramble.core.extraTime()"><span class="badge">Extra Time</span></a>
+                </p>
                 <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
         </form>
-        <h3 class="well">The word to unscramble is: 
-            <mark><strong><span id="scrambled"></span></strong></mark>
-        </h3>
     </main>
     <script src="script.js"></script>
     <script>
-        $('[data-toggle=tooltip]').tooltip();
-        console.log('%cNote: Cheaters never prosper.', 'background: tomato; color: black;');
-        Scramble.run();
+        scramble.core.init();
     </script>
 </body>
 </html>

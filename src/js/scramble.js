@@ -1,171 +1,176 @@
-/**
- * Initialization Module
- *
- * @constructor
- * @namespace
- * @public
- */
-var Scramble = (function( Game ){
+var scramble = (function ( game ) {
 
-    /**
-     * Standard 'onclick' event object
-     * @typedef {Object} ClickEvent
-     */
-    
-    /**
-     * Standard 'oninput' event object
-     * @typedef {Object} InputEvent
-     */
+    var TIME_LIMIT = 120;
+    var SCORE = 5;
 
-    /**
-     * @private
-     * @memberOf Scramble
-     */
-    var input = document.querySelector('#answer');
-    /**
-     * @private
-     * @memberOf Scramble
-     */
-    var DifficultySelect = document.querySelector('#DifficultySelect');
-    /**
-     * @private
-     * @memberOf Scramble
-     */
-    var modal = document.querySelector('#success-modal');
-    /**
-     * @private
-     * @memberOf Scramble
-     */
-    var highlight = document.querySelector('form');
-    /**
-     * @private
-     * @memberOf Scramble
-     */
-    var highlightToggle = document.querySelector('#highlight-toggle');
+    var core = game.core = {};
+    var timer, multiplier, word, scrambler, score, scrambled, current;
 
-    /**
-     * Toggle `Answer Highlight` option
-     * @private
-     * @memberOf Scramble
-     * 
-     * @function
-     */
-    var _toggleListener = function() {
-        Game.Highlight.toggle();
+    var timerEl = document.querySelector('#timer');
+    var multiplierEl = document.querySelector('#multiplier');
+    var scrambledEl = document.querySelector('#scrambled');
+    var scoreEl = document.querySelector('#score');
+    var answerEl = document.querySelector('#answer');
+    var gameEl = document.querySelector('#game');
+    var highEl = document.querySelector('#highScore');
+
+    var _update = function( element, value) {
+        element.textContent = value;
     };
 
-    /**
-     * Toggle Difficulty option
-     * @private
-     * @memberOf Scramble
-     *
-     * @function
-     * 
-     * @param  {ClickEvent} e EventObject on selected difficulty
-     */
-    var _difficultyListener = function ( e ) {
-         if (e.target !== e.currentTarget && e.target.type === 'radio') {
-            if (['easy', 'medium', 'hard', 'stupid'].indexOf(e.target.name) > -1) {
-                Game.Difficulty.current = e.target.name;
-                Game.Difficulty.saveDifficulty();
-                Game.destroy();
-            }
-        }
-        e.stopPropagation();
-        input.focus();
-    };
-
-    /**
-     * Check input and set background if `Answer Highlight` on
-     * @private
-     * @memberOf Scramble
-     *
-     * @function
-     * 
-     * @param  {InputEvent} e EventObject holding field content
-     */
-    var _highlightListener = function( e ) {
-        if(localStorage.Highlight === 'on') {
-            if(e.target.value.length === 0)
-            {
-                highlight.style.backgroundColor = '';
-            } else if (Game.Word.current.toLowerCase().lastIndexOf(e.target.value.toLowerCase(), 0) === 0) {
-                highlight.style.backgroundColor = 'limegreen';
-            } else{
-                highlight.style.backgroundColor = 'tomato';
-            }
-        }
-    };
-
-    /**
-     * Check user input for correct answer
-     * @private
-     * @memberOf Scramble
-     *
-     * @function
-     * 
-     * @param  {InputEvent} e EventObject holding field content
-     */
-    var _answerListener = function ( e ) {
-        if(e.target.value.toLowerCase() === Game.Word.current.toLowerCase()) {
-            $('#correctLabel').toggleClass('invisible');
-            setTimeout(function() {
-                $('#correctLabel').toggleClass('invisible');
-            }, 1200);
-
-            Game.Score.add(Game.Difficulty.current);
-            input.value = '';
-            Game.destroy();
-        }
-    };
-
-    /**
-     * End current instance of Game and call another
-     * @public
-     * @memberOf Scramble
-     */
-    Game.destroy = function() {
-        Game.Multiplier.stop();        
-        window.Scramble = Game;
-        DifficultySelect.removeEventListener('click', _difficultyListener);
-        input.removeEventListener('input', _answerListener);
-        input.removeEventListener('input', _highlightListener);
-        highlightToggle.removeEventListener( 'click', _toggleListener);
-        highlight.style.backgroundColor = '';
-        window.Scramble.run();
-    };
-
-    /**
-     * Start a new instance of Game
-     * @public
-     * @memberOf Scramble
-     */
-    Game.run = function() {
-        if (localStorage.Difficulty) {
-            Game.Difficulty.current = localStorage.Difficulty;
-            Game.Difficulty.updateDifficulty();
+    var _timerCallback = function () {
+        if (seconds <= 0) {
+            core.quit();
         } else {
-            Game.Difficulty.current = 'easy';
-            Game.Difficulty.saveDifficulty();
-            Game.Difficulty.updateDifficulty();
+            seconds -= 1;
+
+            _update( timerEl, seconds);
         }
-
-        if(localStorage.Highlight === 'on') {
-            var toggle = document.querySelector('#highlight-toggle');
-            toggle.setAttribute('aria-pressed', true);
-            toggle.classList.add('active');
-        }
-
-        Game.Score.update();
-        Game.Word.set();
-
-        input.addEventListener( 'input', _answerListener);
-        input.addEventListener( 'input', _highlightListener);
-        DifficultySelect.addEventListener( 'click', _difficultyListener);
-        highlightToggle.addEventListener( 'click', _toggleListener);
-
-        Game.Multiplier.start();
     };
 
-    return Game;
-}(Scramble || {}));
+    var _addListeners = function () {
+        answerEl.addEventListener( 'input', _answerListener);
+    };
+
+    var _removeListeners = function() {
+        answerEl.removeEventListener('input', _answerListener);
+    };
+
+    var _answerListener = function ( e ) {
+        if(e.target.value.toLowerCase() === current.toLowerCase()) {
+            var points = SCORE * multiplier.get();
+            score.add(points);
+            multiplier.add();
+            core.endTurn();
+        }
+    };
+
+    var _checkHelpers = function () {
+        var skip = document.querySelector('#skip');
+        var reshuffle = document.querySelector('#reshuffle');
+        var extraTime = document.querySelector('#extraTime');
+        var current = multiplier.get();
+
+        if (current > 0) {
+            skip.style.visibility = 'visible';
+        } else {
+            skip.style.visibility = 'hidden';
+        }
+
+        if ( current > 5 ) {
+            reshuffle.style.visibility = 'visible';
+        } else {
+            reshuffle.style.visibility = 'hidden';
+        }
+
+        if ( current > 10 ) {
+            extraTime.style.visibility = 'visible';
+        } else {
+            extraTime.style.visibility = 'hidden';
+        }
+    };
+
+    core.init = function () {
+        // Dependencies
+        timer = game.timer;
+        multiplier = game.multiplier;
+        word = game.word;
+        scrambler = game.scrambler;
+        score = game.score;
+
+        // Initialize
+        word.init();
+        _checkHelpers();
+        _update(highEl, localStorage.highScore || 0);
+    };
+
+    core.newGame = function () {
+        // Initialize values
+        seconds = TIME_LIMIT;
+        score.reset();
+        multiplier.reset();
+
+        // Show board
+        gameEl.style.visibility = 'visible';
+
+        // Start game timer
+        timer.start(_timerCallback);
+
+        // Start listening
+        _addListeners();
+
+        // Start turn
+        core.startTurn();
+    };
+
+    core.quit = function() {
+
+        // Check high score
+        if ( localStorage.getItem('highScore') === null || parseInt( localStorage.highScore ) < score.get() ) {
+            localStorage.highScore = score.get();
+        }
+
+        // Cleanup listeners
+        _removeListeners();
+
+        // Stop timers
+        timer.stop();
+
+        _update(highEl, localStorage.highScore || 0);
+
+        // Hide board
+        [gameEl, skip, reshuffle, extraTime].forEach (function( el) {
+            el.style.visibility = 'hidden';
+        });
+    };
+
+    core.endTurn = function() {
+        // Clear input
+        answerEl.value = '';
+
+        core.startTurn();
+    };
+
+    core.startTurn = function() {
+        // Initialize values
+        word.pick();
+        current = word.get();
+        console.log(current); // Cheater
+        
+        // Initialize board
+        _update( scoreEl, score.get());
+        _update( scrambledEl, scrambler( word.get() ) );
+        _update( multiplierEl, multiplier.get());
+        _update( timerEl, seconds);
+        _checkHelpers();
+    };
+
+    core.skip = function() {
+        if (multiplier.get() > 1) {
+            multiplier.subtract();
+        }
+
+        _update( multiplierEl, multiplier.get());
+        _checkHelpers();
+
+        core.endTurn();
+    };
+
+    core.reshuffle = function () {
+        multiplier.subtract( 5 );
+        _update( multiplierEl, multiplier.get());
+        _checkHelpers();
+
+        _update(scrambledEl, scrambler ( word.get() ) );
+    };
+
+    core.extraTime = function () {
+        multiplier.subtract( 10 );
+        _update( multiplierEl, multiplier.get());
+        _checkHelpers();
+
+        seconds += 60;
+    };
+
+    return game;
+} ( scramble || {} ));
