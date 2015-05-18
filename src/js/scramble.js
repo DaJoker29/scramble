@@ -4,15 +4,24 @@ var scramble = (function ( game ) {
     var SCORE = 5;
 
     var core = game.core = {};
-    var timer, multiplier, word, scrambler, score, scrambled, current;
+    var timer, multiplier, word, scrambler, score, scrambled, stats, current;
 
+    // Game Elements
     var timerEl = document.querySelector('#timer');
     var multiplierEl = document.querySelector('#multiplier');
     var scrambledEl = document.querySelector('#scrambled');
     var scoreEl = document.querySelector('#score');
     var answerEl = document.querySelector('#answer');
     var gameEl = document.querySelector('#game');
-    var highEl = document.querySelector('#highScore');
+
+    // Statistics Elements
+    var highScore = document.querySelector('#highScore');
+    var gamesPlayed = document.querySelector('#gamesPlayed');
+    var totalScore = document.querySelector('#totalScore');
+    var lastScore = document.querySelector('#lastScore');
+    var powerupsUsed = document.querySelector('#powerupsUsed');
+    var favPowerup = document.querySelector('#favPowerup');
+    var longestWord = document.querySelector('#longestWord');
 
     var _update = function( element, value) {
         element.textContent = value;
@@ -70,6 +79,16 @@ var scramble = (function ( game ) {
         }
     };
 
+    var _statsUpdate = function() {
+        _update(highScore, localStorage.highScore);
+        _update(gamesPlayed, localStorage.gamesPlayed);
+        _update(totalScore, localStorage.totalScore);
+        _update(lastScore, localStorage.lastScore);
+        // _update(powerupsUsed, localStorage.powerupsUsed);
+        // _update(favPowerup, localStorage.favPowerup);
+        // _update(longestWord, localStorage.longestWord);
+    };
+
     core.init = function () {
         // Dependencies
         timer = game.timer;
@@ -77,11 +96,14 @@ var scramble = (function ( game ) {
         word = game.word;
         scrambler = game.scrambler;
         score = game.score;
+        stats = game.stats;
 
         // Initialize
         word.init();
+        stats.init();
         _checkHelpers();
-        _update(highEl, localStorage.highScore || 0);
+        _statsUpdate();
+
     };
 
     core.newGame = function () {
@@ -106,9 +128,21 @@ var scramble = (function ( game ) {
     core.quit = function() {
 
         // Check high score
-        if ( localStorage.getItem('highScore') === null || parseInt( localStorage.highScore ) < score.get() ) {
-            localStorage.highScore = score.get();
+        if ( parseInt( stats.get( 'highScore' ) ) < score.get() ) {
+            stats.set( 'highScore', score.get() );
         }
+
+        // Increment gamesPlayed
+        stats.set( 'gamesPlayed', parseInt( stats.get( 'gamesPlayed') ) + 1 );
+
+        // Cumulate Total Score
+        stats.set( 'totalScore', parseInt( stats.get( 'totalScore' ) ) + score.get() );
+
+        // Last Score
+        stats.set( 'lastScore', score.get() );
+
+        // Save stats
+        stats.save();
 
         // Cleanup listeners
         _removeListeners();
@@ -116,7 +150,7 @@ var scramble = (function ( game ) {
         // Stop timers
         timer.stop();
 
-        _update(highEl, localStorage.highScore || 0);
+        _statsUpdate();
 
         // Hide board
         [gameEl, skip, reshuffle, extraTime].forEach (function( el) {
