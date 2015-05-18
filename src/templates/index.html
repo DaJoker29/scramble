@@ -31,9 +31,27 @@
             <p>
                 <a href="#" onclick="scramble.core.quit()">Quit Game</a>
             </p>
-            <p>
+            <span class="badge">
+                Games Played: <span id="gamesPlayed"></span>
+            </span>
+            <span class="badge">
                 High Score: <span id="highScore"></span>
-            </p>
+            </span>
+            <span class="badge">
+                Cumulative Score: <span id="totalScore"></span>
+            </span>
+            <span class="badge">
+                Previous Score: <span id="lastScore"></span>
+            </span>
+        <!--     <span class="badge">
+                Powerups Used: <span id="powerupsUsed"></span>
+            </span>
+            <span class="badge">
+                Favorite Powerup: <span id="favPowerup"></span>
+            </span>
+            <span class="badge">
+                Longest Word: <span id="longestWord"></span>
+            </span> -->
         </div>
         <form id="game" style="visibility: hidden;" class="well" action="javascript:void(0);">
             <div class="well">
@@ -48,9 +66,9 @@
             </div>
             <div class="form-group">
                 <p>
-                    <a href="#" id="skip" onclick="scramble.core.skip()"><span class="badge">Skip</span></a>
-                    <a href="#" id="reshuffle" onclick="scramble.core.reshuffle()"><span class="badge">Reshuffle</span></a>
-                    <a href="#" id="extraTime" onclick="scramble.core.extraTime()"><span class="badge">Extra Time</span></a>
+                    <a href="#" id="skip" class="label label-default" onclick="scramble.core.skip()"><span>Skip</span></a>
+                    <a href="#" id="reshuffle" class="label label-default" onclick="scramble.core.reshuffle()"><span>Reshuffle</span></a>
+                    <a href="#" id="extraTime" class="label label-default" onclick="scramble.core.extraTime()"><span>Extra Time</span></a>
                 </p>
                 <input id="answer" type="text" class="form-control" placeholder="Type your answer here" autofocus>
             </div>
