@@ -61,21 +61,27 @@ var scramble = (function ( game ) {
         var current = multiplier.get();
 
         if (current > 0) {
-            skip.style.visibility = 'visible';
+            skip.classList.remove('label-default');
+            skip.classList.add('label-primary');
         } else {
-            skip.style.visibility = 'hidden';
+            skip.classList.add('label-default');
+            skip.classList.remove('label-primary');            
         }
 
-        if ( current > 5 ) {
-            reshuffle.style.visibility = 'visible';
+        if (current > 5) {
+            reshuffle.classList.remove('label-default');
+            reshuffle.classList.add('label-primary');
         } else {
-            reshuffle.style.visibility = 'hidden';
+            reshuffle.classList.add('label-default');
+            reshuffle.classList.remove('label-primary');            
         }
 
-        if ( current > 10 ) {
-            extraTime.style.visibility = 'visible';
+        if (current > 15) {
+            extraTime.classList.remove('label-default');
+            extraTime.classList.add('label-primary');
         } else {
-            extraTime.style.visibility = 'hidden';
+            extraTime.classList.add('label-default');
+            extraTime.classList.remove('label-primary');            
         }
     };
 
