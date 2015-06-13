@@ -4,7 +4,7 @@ var scramble = (function ( game ) {
     var SCORE = 5;
 
     var core = game.core = {};
-    var timer, multiplier, word, scrambler, score, scrambled, stats, current;
+    var timer, multiplier, word, scrambler, seconds, score, scrambled, stats, current, skip, reshuffle, extraTime; /*eslint no-unused-vars:0*/
 
     // Game Elements
     var timerEl = document.querySelector('#timer');
@@ -37,14 +37,6 @@ var scramble = (function ( game ) {
         }
     };
 
-    var _addListeners = function () {
-        answerEl.addEventListener( 'input', _answerListener);
-    };
-
-    var _removeListeners = function() {
-        answerEl.removeEventListener('input', _answerListener);
-    };
-
     var _answerListener = function ( e ) {
         if(e.target.value.toLowerCase() === current.toLowerCase()) {
             var points = SCORE * multiplier.get();
@@ -54,13 +46,21 @@ var scramble = (function ( game ) {
         }
     };
 
-    var _checkHelpers = function () {
-        var skip = document.querySelector('#skip');
-        var reshuffle = document.querySelector('#reshuffle');
-        var extraTime = document.querySelector('#extraTime');
-        var current = multiplier.get();
+    var _addListeners = function () {
+        answerEl.addEventListener( 'input', _answerListener);
+    };
 
-        if (current > 0) {
+    var _removeListeners = function() {
+        answerEl.removeEventListener('input', _answerListener);
+    };
+
+    var _checkHelpers = function () {
+        skip = document.querySelector('#skip');
+        reshuffle = document.querySelector('#reshuffle');
+        extraTime = document.querySelector('#extraTime');
+        var multi = multiplier.get();
+
+        if (multi > 0) {
             skip.classList.remove('label-default');
             skip.classList.add('label-primary');
         } else {
@@ -68,7 +68,7 @@ var scramble = (function ( game ) {
             skip.classList.remove('label-primary');            
         }
 
-        if (current > 5) {
+        if (multi > 5) {
             reshuffle.classList.remove('label-default');
             reshuffle.classList.add('label-primary');
         } else {
@@ -76,7 +76,7 @@ var scramble = (function ( game ) {
             reshuffle.classList.remove('label-primary');            
         }
 
-        if (current > 15) {
+        if (multi > 15) {
             extraTime.classList.remove('label-default');
             extraTime.classList.add('label-primary');
         } else {
@@ -159,7 +159,7 @@ var scramble = (function ( game ) {
         _statsUpdate();
 
         // Hide board
-        [gameEl, skip, reshuffle, extraTime].forEach (function( el) {
+        [gameEl, skip, reshuffle, extraTime].forEach(function( el) {
             el.style.visibility = 'hidden';
         });
     };
