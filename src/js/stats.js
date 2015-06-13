@@ -12,7 +12,7 @@ var scramble = (function ( game ) {
             'lastScore': localStorage.lastScore || 0,
             'powerupsUsed': localStorage.powerupsUsed || JSON.stringify({ 'skip': 0, 'reshuffle': 0, 'extraTime': 0 }),
             'favPowerup': localStorage.favPowerup || 'None',
-            'longestWord': localStorage.longestWord || 'N/A',
+            'longestWord': localStorage.longestWord || 'N/A'
         };
     };
 

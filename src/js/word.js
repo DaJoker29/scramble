@@ -1,3 +1,4 @@
+/*global random */
 var scramble = (function ( game ) {
 
     var word = game.word = {};
